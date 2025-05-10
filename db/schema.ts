@@ -1,9 +1,13 @@
-import { text, integer, sqliteTable } from "drizzle-orm/sqlite-core";
+import { text, integer, sqliteTable, real } from "drizzle-orm/sqlite-core";
 
-export const todos = sqliteTable("todos", {
+export const workoutLog = sqliteTable("workout_logs", {
   id: integer("id", {
     mode: "number",
   }).primaryKey({ autoIncrement: true }),
-  description: text("description").notNull(),
-  completed: integer("completed", { mode: "boolean" }).notNull().default(false),
+  type: text("type").notNull(),
+  weight: real("weight").notNull().default(0),
+  reps: integer("reps").notNull().default(1),
+  createdAt: integer("created_at").$defaultFn(() =>
+    Math.floor(Date.now() / 1000)
+  ),
 });
