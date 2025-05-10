@@ -7,8 +7,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
-  title: "Turso Per User Starter",
-  description: "Database per user starter with Turso, Clerk, and SQLite",
+  title: "Workout Logger",
+  description: "Track your workouts",
 };
 
 export default function RootLayout({
@@ -19,9 +19,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`bg-rich-black overscroll-none ${inter.className}`}>
-          {children}
-        </body>
+        <body className={`overscroll-none ${inter.className}`}>{children}</body>
       </html>
     </ClerkProvider>
   );

@@ -3,8 +3,6 @@
 import { useRef } from "react";
 import { useFormStatus } from "react-dom";
 
-import { addTodo } from "./actions";
-
 export function Form({ onSubmit }: { onSubmit: (formData: FormData) => void }) {
   const formRef = useRef<HTMLFormElement>(null);
 

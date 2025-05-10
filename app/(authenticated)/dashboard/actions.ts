@@ -3,46 +3,39 @@
 import { revalidatePath } from "next/cache";
 import * as schema from "@/db/schema";
 import { getDatabaseClient } from "@/app/utils";
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
-export type TodoItem = {
+export type WorkoutItem = {
   id: number;
-  description: string;
+  type: string;
+  weight: number;
+  reps: number;
 };
 
-export const addTodo = async (formData: FormData) => {
+export const addWorkout = async (formData: FormData) => {
   const client = await getDatabaseClient();
 
-  const description = formData.get("description") as string;
+  const type = formData.get("type") as string;
+  const weight = formData.get("weight") as string;
+  const reps = formData.get("reps") as string;
 
   if (!client) return null;
 
-  await client.insert(schema.todos).values({
-    description,
+  await client.insert(schema.workoutLog).values({
+    type,
+    weight: parseFloat(weight),
+    reps: parseInt(reps, 10),
   });
 
   revalidatePath("/dashboard");
 };
 
-export const removeTodo = async (id: number) => {
+export const removeWorkout = async (id: number) => {
   const client = await getDatabaseClient();
 
   if (!client) return null;
 
-  await client.delete(schema.todos).where(eq(schema.todos.id, id));
-
-  revalidatePath("/dashboard");
-};
-
-export const toggleTodo = async (id: number) => {
-  const client = await getDatabaseClient();
-
-  if (!client) return null;
-
-  await client
-    .update(schema.todos)
-    .set({ completed: sql`NOT completed` })
-    .where(eq(schema.todos.id, id));
+  await client.delete(schema.workoutLog).where(eq(schema.workoutLog.id, id));
 
   revalidatePath("/dashboard");
 };
